@@ -76,5 +76,8 @@ for sequence, representation in sorted_representations:
     if representation < 10:
         break
 
-    print sequence, '  ',
-    print round(representation, 2)
+    expected_occurence_count = sequence_probabilities[sequence] * len(staph_aureus_genome)
+    actual_occurence_count   = sequence_occurence_counts[sequence]
+
+    print sequence, round(representation, 2),
+    print round(expected_occurence_count, 2), actual_occurence_count
