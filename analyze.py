@@ -21,24 +21,23 @@ for base, count in base_counts.iteritems():
     base_frequencies[base] = float(count) / len(staph_aureus_genome)
 
 
-# count sequence occurences
+# count sequence occurrences
 
-sequence_occurence_counts = defaultdict(int)
+sequence_occurrence_counts = defaultdict(int)
 
 sequence_length = 8
 
 for start_index in xrange(len(staph_aureus_genome) - sequence_length + 1):
 
     sequence = staph_aureus_genome[start_index:start_index + sequence_length]
-
-    sequence_occurence_counts[sequence] += 1
+    sequence_occurrence_counts[sequence] += 1
 
 
 # calculate sequence probabilities
 
 sequence_probabilities = {}
 
-for sequence, occurence_count in sequence_occurence_counts.iteritems():
+for sequence, occurrence_count in sequence_occurrence_counts.iteritems():
 
     sequence_probability = 1
 
@@ -54,10 +53,10 @@ sequence_representations = {}
 
 for sequence, probability in sequence_probabilities.iteritems():
 
-    expected_occurence_count = probability * len(staph_aureus_genome)
-    actual_occurence_count   = sequence_occurence_counts[sequence]
+    expected_occurrence_count = probability * len(staph_aureus_genome)
+    actual_occurrence_count   = sequence_occurrence_counts[sequence]
 
-    sequence_representations[sequence] = actual_occurence_count / expected_occurence_count
+    sequence_representations[sequence] = actual_occurrence_count / expected_occurrence_count
 
 
 # sort by overrepresented to underrepresented
@@ -76,8 +75,8 @@ for sequence, representation in sorted_representations:
     if representation < 10:
         break
 
-    expected_occurence_count = sequence_probabilities[sequence] * len(staph_aureus_genome)
-    actual_occurence_count   = sequence_occurence_counts[sequence]
+    expected_occurrence_count = sequence_probabilities[sequence] * len(staph_aureus_genome)
+    actual_occurrence_count   = sequence_occurrence_counts[sequence]
 
     print sequence, round(representation, 2),
-    print round(expected_occurence_count, 2), actual_occurence_count
+    print round(expected_occurrence_count, 2), actual_occurrence_count
