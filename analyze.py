@@ -95,5 +95,5 @@ for print_count, (sequence, representation) in enumerate(sorted_representations)
     expected_occurrence_count = sequence_probabilities[sequence] * len(staph_aureus_genome)
     actual_occurrence_count   = sequence_occurrence_counts[sequence]
 
-    print sequence, round(representation, 2),
-    print round(expected_occurrence_count, 2), actual_occurrence_count
+    print sequence, '%6.2f' % representation,
+    print '%6.2f' % expected_occurrence_count, '%4i' % actual_occurrence_count
