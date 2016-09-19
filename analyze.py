@@ -1,5 +1,15 @@
 from collections import defaultdict
 import operator
+from math import ceil
+
+
+# settings
+
+sequence_length = 12
+ignore_center_length = 4
+
+min_print_representation = 5
+max_print_count = 50
 
 
 # get genome
@@ -25,12 +35,19 @@ for base, count in base_counts.iteritems():
 
 sequence_occurrence_counts = defaultdict(int)
 
-sequence_length = 8
-
 for start_index in xrange(len(staph_aureus_genome) - sequence_length + 1):
 
+    sequence_end_length = int(ceil((float(sequence_length) - ignore_center_length) / 2))
+
     sequence = staph_aureus_genome[start_index:start_index + sequence_length]
-    sequence_occurrence_counts[sequence] += 1
+
+    sequence_ignoring_center = '%s%s%s' % (
+            sequence[:sequence_end_length],
+            '-' * ignore_center_length,
+            sequence[sequence_end_length + ignore_center_length:]
+        )
+
+    sequence_occurrence_counts[sequence_ignoring_center] += 1
 
 
 # calculate sequence probabilities
@@ -42,7 +59,7 @@ for sequence, occurrence_count in sequence_occurrence_counts.iteritems():
     sequence_probability = 1
 
     for base in sequence:
-        sequence_probability *= base_frequencies[base]
+        sequence_probability *= base_frequencies.get(base, 1)
 
     sequence_probabilities[sequence] = sequence_probability
 
@@ -70,9 +87,9 @@ sorted_representations = sorted(
 
 # print overrepresented sequences
 
-for sequence, representation in sorted_representations:
+for print_count, (sequence, representation) in enumerate(sorted_representations):
 
-    if representation < 10:
+    if representation < min_print_representation or print_count == max_print_count:
         break
 
     expected_occurrence_count = sequence_probabilities[sequence] * len(staph_aureus_genome)
